@@ -1,0 +1,9 @@
+# .gitignore for wendy
+*~
+*.swp
+node_modules
+*.pdf
+frontend/dist/
+backend/dist/
+swagger.yaml
+docs/build/
