@@ -19,3 +19,16 @@ html(lang="en")
       button.button_entropy(type='button') Select a file
     .profile
       h1 This is your profile
+
+    // The core logic
+    script(type='module', src='js/wendy_app.js?v=1.0')
+    // The service-worker
+    if fingerprint.with_service_worker
+      script.
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('./wendy_service_worker.js')
+           .then(registration => console.log('wendy service worker installed with scope: ', registration.scope))
+           .catch(err => console.error('Error by installing the wendy service worker: ', err));
+        } else {
+          console.warn('Service Worker not supported in this browser');
+        }
