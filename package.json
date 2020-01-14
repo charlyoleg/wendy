@@ -4,7 +4,18 @@
   "description": "enabling the creation of a web of trust",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbode",
+    "clean_frontend": "rm -fr frontend/dist",
+    "build_html": "WITH_SERVICE_WORKER=true pug -O frontend/pug/fingerprint.js --pretty --out frontend/dist/ frontend/pug/index.pug",
+    "build_html_dev": "pug -O frontend/pug/fingerprint.js --pretty --out frontend/dist/ frontend/pug/index.pug",
+    "dev_html": "pug -O frontend/pug/fingerprint.js --pretty --watch --out frontend/dist/ frontend/pug/index.pug",
+    "build_css": "sass frontend/sass/wendy_style.scss frontend/dist/css/wendy_style.css",
+    "dev_css": "sass --watch frontend/sass/wendy_style.scss frontend/dist/css/wendy_style.css",
+    "build": "run-s build_html build_css",
+    "build_dev": "run-s build_html_dev build_css",
+    "dev": "run-p -l dev_html dev_css serve",
+    "serve": "live-server frontend/dist",
+    "start": "run-s clean_frontend build serve"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,21 @@
+//- index.pug
+doctype html
+html(lang="en")
+  head
+    meta(charset='utf-8')
+    title Wendy
+    meta(name='description', content='Enabling the creation of a web of trust')
+    meta(name='author', content='charlyoleg')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='css/wendy_style.css?v=1.0')
+    link(rel='manifest', href='/manifest.json')
+    link(rel='icon', href='wendy_favicon.svg', type='image/svg+xml')
+  body
+    .entrance
+      h1 Welcome to Wendy's world
+      button.button_enter(type='button') Create a profile
+      button.button_enter(type='button') Load a profile
+    .entropy
+      button.button_entropy(type='button') Select a file
+    .profile
+      h1 This is your profile
