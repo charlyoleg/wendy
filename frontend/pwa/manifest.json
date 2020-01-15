@@ -1,0 +1,22 @@
+{
+  "name": "Wendy",
+  "short_name": "Wendy",
+  "description": "Enabling the creation of a web of trust",
+  "icons": [
+    {
+      "src": "/wendy_favicon_64x64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "/wendy_favicon_256x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }
+  ],
+  "display": "standalone",
+  "background_color": "pink",
+  "theme_color": "purple",
+  "start_url": "/index.html"
+}
+

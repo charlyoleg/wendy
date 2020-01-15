@@ -9,7 +9,9 @@ html(lang="en")
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet', href='css/wendy_style.css?v=1.0')
     link(rel='manifest', href='/manifest.json')
-    link(rel='icon', href='wendy_favicon.svg', type='image/svg+xml')
+    link(rel='icon', type='image/svg+xml', href='wendy_favicon.svg')
+    link(rel='icon', type='image/png', sizes="64x64", href='wendy_favicon_64x64.png')
+    link(rel='icon', type='image/png', sizes="256x256", href='wendy_favicon_256x256.png')
   body
     .entrance
       h1 Welcome to Wendy's world
@@ -19,6 +21,30 @@ html(lang="en")
       button.button_entropy(type='button') Select a file
     .profile
       h1 This is your profile
+    footer#apropos
+      h1 Apropos
+      .wendy_fingerprint
+        h2 Wendy's fingerprint
+        p= 'PWA Wendy Version: ' + fingerprint.version
+        p= 'build on: ' + fingerprint.build_date
+        p Source code information:
+        p= 'git repo: ' + fingerprint.git_repo_name
+        p= 'git branch: ' + fingerprint.git_branch_name
+        p= 'git commit hash: ' + fingerprint.git_commit_hash
+        p= 'git commit author: ' + fingerprint.git_commit_author
+        p= 'git commit date: ' + fingerprint.git_commit_date
+        p= 'git commit message: ' + fingerprint.git_commit_message
+
+      .pwa_installation
+        h2 PWA Wendy Installation
+        .action_bar
+          .one_button
+            button#pwa_uninstall.action_button_reset(type='button', disabled=true) Uninstall Wendy
+          .one_status
+            span#pwa_install_status.action_status The PWA Wendy is not installed on this device
+          .one_button
+            button#pwa_install.action_button_submit(type='button', disabled=true) Install Wendy
+
 
     // The core logic
     script(type='module', src='js/wendy_app.js?v=1.0')
