@@ -29,3 +29,21 @@ The back-end eases the data exchange between the peers.
 .. _key-pair : https://en.wikipedia.org/wiki/Public-key_cryptography
 
 
+Getting started
+===============
+
+In a bash-terminal::
+
+  git clone https://github.com/charlyoleg/wendy
+  cd wendy
+  npm i
+  npm run start
+
+
+Public instance
+===============
+
+Wendy's frontend is available on Netlify_.
+
+.. _Netlify : https://infallible-brahmagupta-743a4c.netlify.com/
+
