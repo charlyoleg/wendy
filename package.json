@@ -31,7 +31,6 @@
   },
   "homepage": "https://github.com/charlyoleg/wendy#readme",
   "dependencies": {
-    "cpx": "^1.5.0",
     "git-repo-info": "^2.1.1",
     "jest": "^24.9.0",
     "live-server": "^1.2.1",
