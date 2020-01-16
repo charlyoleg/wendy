@@ -5,6 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --verbode",
+    "install_py": "PIPENV_VENV_IN_PROJECT=1 pipenv install",
+    "clean_docs": "rm -fr docs/build",
+    "build_docs": "pipenv run sphinx-build -b html docs/ docs/build/",
+    "view_docs": "sensible-browser docs/build/index.html",
+    "the_docs": "run-s clean_docs build_docs view_docs",
     "clean_frontend": "rm -fr frontend/dist",
     "build_html": "WITH_SERVICE_WORKER=true pug -O frontend/pug/fingerprint.js --pretty --out frontend/dist/ frontend/pug/index.pug",
     "build_html_dev": "pug -O frontend/pug/fingerprint.js --pretty --out frontend/dist/ frontend/pug/index.pug",
