@@ -25,7 +25,19 @@
     "build_dev": "run-s build_html_dev build_css build_js build_pwa build_favicon build_img",
     "dev": "run-p -l dev_html dev_css dev_js build_pwa build_favicon build_img serve",
     "serve": "live-server frontend/dist",
-    "start": "run-s clean_frontend build serve"
+    "start_frontend": "run-s clean_frontend build serve",
+    "clean_backend": "rm -fr backend/dist",
+    "lint_backend": "tslint -c backend/tslint.json -p backend/tsconfig.json --fix",
+    "build_backend_ts": "tsc -p backend",
+    "create_keys" : "backend/keys/create_keys.sh",
+    "copy_keys": "cp backend/keys/srv_wendy.crt backend/dist/ && cp backend/keys/srv_wendy.key backend/dist/",
+    "build_backend": "run-s build_backend_ts copy_keys",
+    "swag_wendy_app": "swagger-jsdoc -d backend/swaggerDef.js backend/src/wendy_app.ts -o backend/swagger.yaml",
+    "serve_backend": "cd backend/dist && node wendy_app.js",
+    "start_backend": "run-s clean_backend build_backend serve_backend",
+    "clean": "run-s clean_frontend clean_backend",
+    "rebuild": "run-p build build_backend",
+    "start": "run-s clean rebuild serve_backend"
   },
   "repository": {
     "type": "git",
