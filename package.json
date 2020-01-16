@@ -29,7 +29,7 @@
     "clean_backend": "rm -fr backend/dist",
     "lint_backend": "tslint -c backend/tslint.json -p backend/tsconfig.json --fix",
     "build_backend_ts": "tsc -p backend",
-    "create_keys" : "backend/keys/create_keys.sh",
+    "create_keys": "backend/keys/create_keys.sh",
     "copy_keys": "cp backend/keys/srv_wendy.crt backend/dist/ && cp backend/keys/srv_wendy.key backend/dist/",
     "build_backend": "run-s build_backend_ts copy_keys",
     "swag_wendy_app": "swagger-jsdoc -d backend/swaggerDef.js backend/src/wendy_app.ts -o backend/swagger.yaml",
