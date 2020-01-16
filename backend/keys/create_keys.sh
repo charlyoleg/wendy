@@ -3,6 +3,9 @@
 
 cd $(dirname $0)
 
+echo "Delete previous keys ..."
+rm -f srv_wendy.key srv_wendy.crt
+
 echo "Create keys for https (i.e. ssl) ..."
 ## create the key and certificate for ssl
 openssl genrsa -out srv_wendy.key 2018
