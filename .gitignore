@@ -2,6 +2,7 @@
 *~
 *.swp
 node_modules
+.venv
 *.pdf
 frontend/dist/
 backend/dist/
