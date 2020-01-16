@@ -23,6 +23,21 @@ html(lang="en")
       h1 This is your profile
     footer#apropos
       h1 Apropos
+
+      .footer_links
+        h2 Around Wendy
+        ol(type=1)
+          li
+            a(href='https://github.com/charlyoleg/wendy') github
+          li
+            a(href='https://wendy.readthedocs.io/en/latest/') docs
+          li
+            a(href='https://app.netlify.com/sites/infallible-brahmagupta-743a4c/deploys') continuous-integration
+          li
+            a(href='https://infallible-brahmagupta-743a4c.netlify.com/') the Netlify instance
+          li
+            a(href='https://readthedocs.org/projects/wendy/') docs status
+
       .wendy_fingerprint
         h2 Wendy's fingerprint
         p= 'PWA Wendy Version: ' + fingerprint.version

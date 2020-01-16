@@ -47,3 +47,17 @@ Wendy's frontend is available on Netlify_.
 
 .. _Netlify : https://infallible-brahmagupta-743a4c.netlify.com/
 
+
+Documentation
+=============
+
+You can browse the documentation on readthedocs_ or build it locally::
+
+  git clone https://github.com/charlyoleg/wendy
+  cd wendy
+  npm install
+  npm run install_py
+  npm run the_docs
+
+.. _readthedocs : https://wendy.readthedocs.io/en/latest/
+
