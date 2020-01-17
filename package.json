@@ -36,7 +36,7 @@
     "serve_backend": "cd backend/dist && node wendy_server.js",
     "start_backend": "run-s clean_backend build_backend copy_public serve_backend",
     "clean": "run-s clean_frontend clean_backend",
-    "rebuild": "run-p build build_backend",
+    "rebuild": "run-p build_dev build_backend",
     "copy_public": "mkdir -p backend/dist && rm -fr backend/dist/public && cp -a frontend/dist backend/dist/public",
     "launch_browser": "sensible-browser https://localhost:9631",
     "start": "run-s clean rebuild copy_public serve_backend"
