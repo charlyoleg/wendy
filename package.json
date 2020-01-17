@@ -34,10 +34,11 @@
     "build_backend": "run-s build_backend_ts copy_keys",
     "swag_wendy_server": "swagger-jsdoc -d backend/swaggerDef.js backend/src/wendy_server.ts -o backend/swagger.yaml",
     "serve_backend": "cd backend/dist && node wendy_server.js",
-    "start_backend": "run-s clean_backend build_backend serve_backend",
+    "start_backend": "run-s clean_backend build_backend copy_public serve_backend",
     "clean": "run-s clean_frontend clean_backend",
     "rebuild": "run-p build build_backend",
-    "start": "run-s clean rebuild serve_backend"
+    "copy_public": "mkdir -p backend/dist && rm -fr backend/dist/public && cp -a frontend/dist backend/dist/public",
+    "start": "run-s clean rebuild copy_public serve_backend"
   },
   "repository": {
     "type": "git",

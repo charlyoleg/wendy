@@ -23,6 +23,7 @@ const wendy_rest = express();
 const wendy_http_port = 9631;
 const wendy_https_port = 9631;
 
+
 // ####################################
 // Browser security policy: Access-Control-Allow-Origin
 // ####################################
@@ -32,11 +33,13 @@ wendy_rest.use("/", (req, res, next) => {
     next();
 });
 
+
 // ####################################
 // wendy_core
 // ####################################
 
 const wendy_count = 0;
+
 
 // ####################################
 // rest-api end points
@@ -64,6 +67,13 @@ wendy_rest.get("/quantumcom", (req, res) => {
     const r_msg = "hello guys! count: " + wendy_count.toString();
     res.send(r_msg);
 });
+
+
+// ####################################
+// serving static files
+// ####################################
+
+wendy_server.use('/', express.static(path.join(__dirname, 'public')))
 
 
 // ####################################
