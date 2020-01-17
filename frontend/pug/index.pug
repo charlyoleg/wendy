@@ -21,6 +21,12 @@ html(lang="en")
       button.button_entropy(type='button') Select a file
     .profile
       h1 This is your profile
+      .backend
+      h2 Wendy server (communication server)
+      input#server_url(type='text', name='server_url', value='https://localhost:9631')
+      button#action_test_server.button_enter(type='button') Test the server
+      span#server_status NUll
+
     footer#apropos
       h1 Apropos
 

@@ -115,5 +115,35 @@ btn_pwauninstall.addEventListener('click', (evt:Event) => {
 });
 
 
+// =========================
+// Test wendy_server
+// =========================
+
+// html elements
+const input_server_url:HTMLInputElement = document.querySelector("#server_url");
+const btn_test_server:HTMLButtonElement = document.querySelector("#action_test_server");
+const span_server_status:HTMLSpanElement = document.querySelector("#server_status");
+
+btn_test_server.addEventListener('click', (evt:Event) => {
+  const wendy_server_url = input_server_url.value
+  console.log('Click on action_test_server with url: ' + wendy_server_url);
+  //span_server_status.innerHTML = "hello";
+  //span_server_status.style.background = "grey";
+  fetch(wendy_server_url + '/yellow_counter')
+    .then((res) => { // http response
+      if (res.ok) {
+        return res.json(); // consuming the http body
+      }
+      throw new Error('Network response was not ok.');
+    }).then((resJson) => {
+      // console.log('fetch response json: ', JSON.stringify(resJson));
+      // console.log('fetch response json raw: ', resJson);
+      console.log(resJson.yellow_counter);
+      span_server_status.innerHTML = resJson.yellow_counter.replace(/\n/g, '<br>');
+    }).catch(function (error) {
+      console.log('Failing fetch operation: ', error.message);
+    });
+});
+
 
 

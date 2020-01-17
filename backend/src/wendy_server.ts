@@ -39,12 +39,29 @@ wendy_server.use("/", (req, res, next) => {
 // wendy_core
 // ####################################
 
-let wendy_count = 0;
+let yellow_counter = 0;
 
 
 // ####################################
 // rest-api end points
 // ####################################
+
+/**
+ * @swagger
+ * /yellow_counter:
+ *   get:
+ *     description: Returns the incrementing yellow_counter
+ *     responses:
+ *       200:
+ *         description: the yellow_counter in json
+ */
+wendy_server.get("/yellow_counter", (req, res) => {
+    yellow_counter += 1;
+    console.log("wendy_server: yellow_counter: " + yellow_counter.toString());
+    //res.send(yellow_counter.toString());
+    res.json({ yellow_counter : yellow_counter.toString() });
+});
+
 
 /**
  * @swagger
@@ -62,12 +79,13 @@ let wendy_count = 0;
  *       200:
  *         description: the message
  */
-wendy_server.get("/quantumcom", (req, res) => {
-    console.log("wendy_server: quantumcom: req.query.msg_id: " + req.query.msg_id);
-    wendy_count += 1;
-    const r_msg = "hello guys! count: " + wendy_count.toString();
-    res.send(r_msg);
-});
+ //wendy_server.get("/quantumcom", (req, res) => {
+ //    console.log("wendy_server: quantumcom: req.query.msg_id: " + req.query.msg_id);
+ //    yellow_counter += 1;
+ //    const r_msg = "Increment the yellow_counter: " + yellow_counter.toString();
+ //    //res.send(yellow_counter.toString());
+ //    res.json({ yellow_counter : yellow_counter.toString() });
+ //});
 
 
 // ####################################
