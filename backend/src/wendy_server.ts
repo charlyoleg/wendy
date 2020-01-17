@@ -92,7 +92,16 @@ wendy_server.get("/yellow_counter", (req, res) => {
 // serving static files
 // ####################################
 
-wendy_server.use('/', express.static(path.join(__dirname, 'public')))
+wendy_server.use('/', express.static(path.join(__dirname, 'public')));
+
+
+// ####################################
+// serving static files
+// ####################################
+
+wendy_server.use(function (req, res, next) {
+  res.status(404).send("Hey abc, Sorry can't find that!");
+});
 
 
 // ####################################
