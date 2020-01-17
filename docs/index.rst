@@ -12,6 +12,7 @@ Welcome to Wendy's documentation!
 
   README
   notes_on_wendy
+  notes_on_qrcode
 
 
 
