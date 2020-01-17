@@ -3,7 +3,7 @@
 module.exports = {
   info: {
     // API informations (required)
-    title: 'rest_wendy_app', // Title (required)
+    title: 'rest_wendy_server', // Title (required)
     version: '1.0.0', // Version (required)
     description: 'A rest-api for the wendy-app', // Description (optional)
   },
