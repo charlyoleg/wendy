@@ -13,13 +13,14 @@
 import express from "express";
 import fs from "fs";
 import https from "https";
+import path from "path";
 
 const ssl_options = {
     key: fs.readFileSync("./srv_wendy.key"),
     cert: fs.readFileSync("./srv_wendy.crt")
 };
 
-const wendy_rest = express();
+const wendy_server = express();
 const wendy_http_port = 9631;
 const wendy_https_port = 9631;
 
@@ -28,7 +29,7 @@ const wendy_https_port = 9631;
 // Browser security policy: Access-Control-Allow-Origin
 // ####################################
 
-wendy_rest.use("/", (req, res, next) => {
+wendy_server.use("/", (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     next();
 });
@@ -38,7 +39,7 @@ wendy_rest.use("/", (req, res, next) => {
 // wendy_core
 // ####################################
 
-const wendy_count = 0;
+let wendy_count = 0;
 
 
 // ####################################
@@ -61,8 +62,8 @@ const wendy_count = 0;
  *       200:
  *         description: the message
  */
-wendy_rest.get("/quantumcom", (req, res) => {
-    console.log("wendy_rest: quantumcom: req.query.msg_id: " + req.query.msg_id);
+wendy_server.get("/quantumcom", (req, res) => {
+    console.log("wendy_server: quantumcom: req.query.msg_id: " + req.query.msg_id);
     wendy_count += 1;
     const r_msg = "hello guys! count: " + wendy_count.toString();
     res.send(r_msg);
@@ -79,10 +80,10 @@ wendy_server.use('/', express.static(path.join(__dirname, 'public')))
 // ####################################
 // main whole loop
 // ####################################
-// wendy_rest.listen(wendy_http_port, () => {
-//    console.log('wendy_rest: listening at http port '+ wendy_http_port);
+// wendy_server.listen(wendy_http_port, () => {
+//    console.log('wendy_server: listening at http port '+ wendy_http_port);
 // });
 
-https.createServer(ssl_options, wendy_rest).listen(wendy_https_port, () => {
-    console.log("wendy_rest_app: listening at https port " + wendy_https_port);
+https.createServer(ssl_options, wendy_server).listen(wendy_https_port, () => {
+    console.log("wendy_server: listening at https port " + wendy_https_port);
 });
