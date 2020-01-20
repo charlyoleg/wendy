@@ -40,6 +40,7 @@ wendy_server.use("/", (req, res, next) => {
 // ####################################
 
 let yellow_counter = 0;
+let quantum_msgs = new Map<string,string>();
 
 
 // ####################################
@@ -72,20 +73,48 @@ wendy_server.get("/yellow_counter", (req, res) => {
  *       - name: msg_id
  *         in: query
  *         required: true
- *         description: the hash of the requested message
+ *         description: the msg-id of the requested message
  *         schema:
  *           type:string
  *     responses:
- *       200:
- *         description: the message
+ *       default:
+ *         description: Bad request
+ *       '200':
+ *         description: message returned and deleted
+ *   post:
+ *     description: Returns the a message
+ *     parameters:
+ *       - name: msg_id
+ *         in: query
+ *         required: true
+ *         description: the msg-id of the requested message
+ *         schema:
+ *           type:string
+ *     requestBody:
+ *       description: a raw message
+ *       required: true
+ *       content:
+ *         text/plain:
+ *         schema:
+ *           type: string
+ *     responses:
+ *       default:
+ *         description: Bad request
+ *       '201':
+ *         description: message created
  */
- //wendy_server.get("/quantumcom", (req, res) => {
- //    console.log("wendy_server: quantumcom: req.query.msg_id: " + req.query.msg_id);
- //    yellow_counter += 1;
- //    const r_msg = "Increment the yellow_counter: " + yellow_counter.toString();
- //    //res.send(yellow_counter.toString());
- //    res.json({ yellow_counter : yellow_counter.toString() });
- //});
+ wendy_server.get("/quantumcom/:msg_id", (req, res) => {
+     const r_quantum_msg = "GET quantumcom: " + req.params.msg_id;
+     console.log(r_quantum_msg);
+     res.send(r_quantum_msg);
+ });
+
+ wendy_server.post("/quantumcom/:msg_id", (req, res) => {
+    const new_quantum_msg = "POST quantumcom: " + req.params.msg_id;
+    console.log(new_quantum_msg);
+    quantum_msgs.set(req.params.msg_id, new_quantum_msg);
+    res.send("ok");
+});
 
 
 // ####################################

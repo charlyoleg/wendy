@@ -116,16 +116,24 @@ btn_pwauninstall.addEventListener('click', (evt:Event) => {
 
 
 // =========================
+// Wendy App Core
+// =========================
+
+const input_server_url:HTMLInputElement = document.querySelector("#server_url");
+let wendy_server_url = input_server_url.value
+
+
+// =========================
 // Test wendy_server
 // =========================
 
 // html elements
-const input_server_url:HTMLInputElement = document.querySelector("#server_url");
+//const input_server_url:HTMLInputElement = document.querySelector("#server_url");
 const btn_test_server:HTMLButtonElement = document.querySelector("#action_test_server");
 const span_server_status:HTMLSpanElement = document.querySelector("#server_status");
 
 btn_test_server.addEventListener('click', (evt:Event) => {
-  const wendy_server_url = input_server_url.value
+  //const wendy_server_url = input_server_url.value
   console.log('Click on action_test_server with url: ' + wendy_server_url);
   //span_server_status.innerHTML = "hello";
   //span_server_status.style.background = "grey";
@@ -142,6 +150,71 @@ btn_test_server.addEventListener('click', (evt:Event) => {
       span_server_status.innerHTML = resJson.yellow_counter.replace(/\n/g, '<br>');
     }).catch(function (error) {
       console.log('Failing fetch operation: ', error.message);
+    });
+});
+
+// ==========================
+// Quantum communication push
+// ==========================
+
+// html elements
+const txt_quantum_msg_push:HTMLTextAreaElement = document.querySelector("#quantum_msg_push");
+const btn_action_quantum_push:HTMLButtonElement = document.querySelector("#action_quantum_push");
+const span_quantum_msg_id_push:HTMLSpanElement = document.querySelector("#quantum_msg_id_push");
+const span_quantum_push_status:HTMLSpanElement = document.querySelector("#quantum_push_status");
+
+btn_action_quantum_push.addEventListener('click', (evt:Event) => {
+  const txt_to_push = txt_quantum_msg_push.value;
+  const push_msg_id = "xyz-66";
+  console.log('Click on push-message with id: ' + push_msg_id);
+  span_quantum_msg_id_push.innerHTML = push_msg_id;
+  fetch(wendy_server_url + '/quantumcom/' + push_msg_id, {
+    method: "post",
+    headers: {
+      'Accept': 'text/plain',
+      'Content-Type': 'text/plain'
+    },
+    body: txt_to_push
+    })
+    .then((res) => { // http response
+      if (res.ok) {
+        return res.text(); // consuming the http body
+      }
+      throw new Error('Network response was not ok.');
+    }).then((resText) => {
+      console.log("Quantum push response: " + resText);
+      span_quantum_push_status.innerHTML = resText;
+    }).catch(function (error) {
+      console.log('Failing fetch operation: ', error.message);
+    });
+});
+
+
+// ==========================
+// Quantum communication pull
+// ==========================
+
+const input_quantum_msg_id_pull:HTMLInputElement = document.querySelector("#quantum_msg_id_pull");
+const btn_action_quantum_pull:HTMLButtonElement = document.querySelector("#action_quantum_pull");
+const span_quantum_msg_pull_status:HTMLSpanElement = document.querySelector("#quantum_msg_pull_status");
+const txt_quantum_msg_pull:HTMLTextAreaElement = document.querySelector("#quantum_msg_pull");
+
+btn_action_quantum_pull.addEventListener('click', (evt:Event) => {
+  const pull_msg_id = input_quantum_msg_id_pull.value;
+  console.log('Click on pull-message with id: ' + pull_msg_id);
+  fetch(wendy_server_url + '/quantumcom/' + pull_msg_id)
+    .then((res) => { // http response
+      if (res.ok) {
+        return res.text(); // consuming the http body
+      }
+      throw new Error('Network response was not ok.');
+    }).then((resText) => {
+      console.log("Quantum pull response: " + pull_msg_id);
+      span_quantum_msg_pull_status.innerHTML = "Received " + pull_msg_id;
+      txt_quantum_msg_pull.innerHTML = resText;
+    }).catch(function (error) {
+      console.log('Failing fetch operation: ', error.message);
+      span_quantum_msg_pull_status.innerHTML = "Error: " + error.message;
     });
 });
 
