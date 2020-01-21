@@ -11,6 +11,7 @@
 // const https = require('https');
 // const fs = require('fs');
 import express from "express";
+import bodyParser from "body-parser";
 import fs from "fs";
 import https from "https";
 import path from "path";
@@ -21,6 +22,7 @@ const ssl_options = {
 };
 
 const wendy_server = express();
+const textParser = bodyParser.text()
 const wendy_http_port = 9631;
 const wendy_https_port = 9631;
 
@@ -81,6 +83,8 @@ wendy_server.get("/yellow_counter", (req, res) => {
  *         description: Bad request
  *       '200':
  *         description: message returned and deleted
+ *       '404':
+ *         description: no message found
  *   post:
  *     description: Returns the a message
  *     parameters:
@@ -103,17 +107,31 @@ wendy_server.get("/yellow_counter", (req, res) => {
  *       '201':
  *         description: message created
  */
- wendy_server.get("/quantumcom/:msg_id", (req, res) => {
-     const r_quantum_msg = "GET quantumcom: " + req.params.msg_id;
-     console.log(r_quantum_msg);
-     res.send(r_quantum_msg);
- });
+wendy_server.get("/quantumcom/:msg_id", (req, res) => {
+  if(quantum_msgs.has(req.params.msg_id)){
+    //const r_quantum_msg = "GET quantumcom: " + req.params.msg_id + " : Yes";
+    const r_quantum_msg = quantum_msgs.get(req.params.msg_id);
+    console.log("GET message ID " + req.params.msg_id);
+    //console.log(r_quantum_msg);
+    res.send(r_quantum_msg);
+  }else{
+    console.log("GET message ID " + req.params.msg_id + " : NULL");
+    res.status(404).end();
+  }
+});
 
- wendy_server.post("/quantumcom/:msg_id", (req, res) => {
-    const new_quantum_msg = "POST quantumcom: " + req.params.msg_id;
-    console.log(new_quantum_msg);
-    quantum_msgs.set(req.params.msg_id, new_quantum_msg);
-    res.send("ok");
+wendy_server.post("/quantumcom/:msg_id", textParser, (req, res) => {
+  //const new_quantum_msg = "POST quantumcom: " + req.params.msg_id;
+  const new_quantum_msg = req.body;
+  console.log("POST msg ID " + req.params.msg_id);
+  //console.log(new_quantum_msg)
+  let resBody = "Written";
+  if(quantum_msgs.has(req.params.msg_id)){
+    resBody = "Overwritten";
+    console.log("key " + req.params.msg_id + " already exists and will be overwritten!")
+  }
+  quantum_msgs.set(req.params.msg_id, new_quantum_msg);
+  res.send(resBody);
 });
 
 

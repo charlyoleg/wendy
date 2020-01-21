@@ -142,7 +142,7 @@ btn_test_server.addEventListener('click', (evt:Event) => {
       if (res.ok) {
         return res.json(); // consuming the http body
       }
-      throw new Error('Network response was not ok.');
+      //throw new Error('Network response was not ok.');
     }).then((resJson) => {
       // console.log('fetch response json: ', JSON.stringify(resJson));
       // console.log('fetch response json raw: ', resJson);
@@ -180,12 +180,13 @@ btn_action_quantum_push.addEventListener('click', (evt:Event) => {
       if (res.ok) {
         return res.text(); // consuming the http body
       }
-      throw new Error('Network response was not ok.');
+      //throw new Error('Network response was not ok.');
     }).then((resText) => {
       console.log("Quantum push response: " + resText);
       span_quantum_push_status.innerHTML = resText;
     }).catch(function (error) {
       console.log('Failing fetch operation: ', error.message);
+      span_quantum_push_status.innerHTML = "Error: " + error.message;
     });
 });
 
@@ -204,17 +205,28 @@ btn_action_quantum_pull.addEventListener('click', (evt:Event) => {
   console.log('Click on pull-message with id: ' + pull_msg_id);
   fetch(wendy_server_url + '/quantumcom/' + pull_msg_id)
     .then((res) => { // http response
+      //console.log("res.ok: " + res.ok);
+      //console.log("res.status: " + res.status);
       if (res.ok) {
         return res.text(); // consuming the http body
+      } else if (res.status == 404) {
+        return "NULL";
       }
-      throw new Error('Network response was not ok.');
+      //throw new Error('Network response was not ok.');
     }).then((resText) => {
-      console.log("Quantum pull response: " + pull_msg_id);
-      span_quantum_msg_pull_status.innerHTML = "Received " + pull_msg_id;
-      txt_quantum_msg_pull.innerHTML = resText;
-    }).catch(function (error) {
+      if (resText == "NULL") {
+        console.log("Quantum pull 404 response: " + pull_msg_id);
+        span_quantum_msg_pull_status.innerHTML = "No message with ID " + pull_msg_id;
+        txt_quantum_msg_pull.innerHTML = "NULL";
+      } else {
+        console.log("Quantum pull 200 response: " + pull_msg_id);
+        span_quantum_msg_pull_status.innerHTML = "Received message with ID " + pull_msg_id;
+        txt_quantum_msg_pull.innerHTML = resText;
+      }
+    }).catch((error) => {
       console.log('Failing fetch operation: ', error.message);
       span_quantum_msg_pull_status.innerHTML = "Error: " + error.message;
+      txt_quantum_msg_pull.innerHTML = "NULL";
     });
 });
 
