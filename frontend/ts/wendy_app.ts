@@ -244,13 +244,29 @@ btn_action_quantum_pull.addEventListener('click', (evt:Event) => {
         return c_404_body;
       }
       return resBody;
-    }).then((resText) => {
+    }).then( async (resText) => {
       if (resText == c_404_body) {
         console.log("Quantum pull 404 response: " + pull_msg_id);
         span_quantum_msg_pull_status.innerHTML = "No message with ID " + pull_msg_id;
         txt_quantum_msg_pull.innerHTML = c_invalid_message;
       } else {
         console.log("Quantum pull 200 response: " + pull_msg_id);
+
+        const msg_size = resText.length;
+        if(msg_size > c_message_size_max) {
+          const text_explanation = msg_size.toString() + " > " + c_message_size_max.toString();
+          console.log("Warning: Message dropped because too large: " + text_explanation);
+          span_quantum_msg_pull_status.innerHTML = "Warning: Message dropped because too large: " + text_explanation;
+          return;
+        }
+        const msg_digest = await digestMessage(resText);
+        const expected_msg_id = msg_digest.substring(0, c_msg_id_digest_size) + "-" + msg_size.toString();
+        if(expected_msg_id != pull_msg_id){
+          const text_explanation = pull_msg_id + " != " + expected_msg_id;
+          console.log("Warning: Message dropped because unexpected digest or ID: " + text_explanation);
+          span_quantum_msg_pull_status.innerHTML = "Warning: Message dropped because unexpected digest or ID: " + text_explanation;
+          return;
+        }
         span_quantum_msg_pull_status.innerHTML = "Received message with ID " + pull_msg_id;
         txt_quantum_msg_pull.innerHTML = resText;
       }
