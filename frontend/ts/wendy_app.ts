@@ -116,8 +116,26 @@ btn_pwauninstall.addEventListener('click', (evt:Event) => {
 
 
 // =========================
+// Helper functions
+// =========================
+
+async function digestMessage(message: string) {
+  const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
+  const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+  return hashHex;
+}
+
+
+// =========================
 // Wendy App Core
 // =========================
+
+const c_404_body = "NULL"; // body value if request-status is 404
+const c_invalid_message = "NULL"; // to be displayed if request-status is 404
+const c_message_size_max = 20; // don't push message bigger than that
+const c_msg_id_digest_size = 5; // size of the first part of msg_id "abcde-134"
 
 const input_server_url:HTMLInputElement = document.querySelector("#server_url");
 let wendy_server_url = input_server_url.value
@@ -163,9 +181,19 @@ const btn_action_quantum_push:HTMLButtonElement = document.querySelector("#actio
 const span_quantum_msg_id_push:HTMLSpanElement = document.querySelector("#quantum_msg_id_push");
 const span_quantum_push_status:HTMLSpanElement = document.querySelector("#quantum_push_status");
 
-btn_action_quantum_push.addEventListener('click', (evt:Event) => {
+btn_action_quantum_push.addEventListener('click', async (evt:Event) => {
   const txt_to_push = txt_quantum_msg_push.value;
-  const push_msg_id = "xyz-66";
+  const msg_size = txt_to_push.length;
+  if(msg_size > c_message_size_max) {
+    span_quantum_msg_id_push.innerHTML = "";
+    const text_explanation = msg_size.toString() + " > " + c_message_size_max.toString()
+    console.log("Warning: Message won't be pushed because too large: " + text_explanation);
+    span_quantum_push_status.innerHTML = "The message is too large to be sent: " + text_explanation;
+    return;
+  }
+  //const push_msg_id = "xyz-66";
+  const push_msg_digest = await digestMessage(txt_to_push);
+  const push_msg_id = push_msg_digest.substring(0, c_msg_id_digest_size) + "-" + msg_size.toString();
   console.log('Click on push-message with id: ' + push_msg_id);
   span_quantum_msg_id_push.innerHTML = push_msg_id;
   fetch(wendy_server_url + '/quantumcom/' + push_msg_id, {
@@ -177,10 +205,9 @@ btn_action_quantum_push.addEventListener('click', (evt:Event) => {
     body: txt_to_push
     })
     .then((res) => { // http response
-      if (res.ok) {
-        return res.text(); // consuming the http body
-      }
-      //throw new Error('Network response was not ok.');
+      //console.log("res.ok: " + res.ok);
+      //console.log("res.status: " + res.status);
+      return res.text(); // consuming the http body
     }).then((resText) => {
       console.log("Quantum push response: " + resText);
       span_quantum_push_status.innerHTML = resText;
@@ -207,17 +234,16 @@ btn_action_quantum_pull.addEventListener('click', (evt:Event) => {
     .then((res) => { // http response
       //console.log("res.ok: " + res.ok);
       //console.log("res.status: " + res.status);
-      if (res.ok) {
-        return res.text(); // consuming the http body
-      } else if (res.status == 404) {
-        return "NULL";
+      const resBody = res.text();
+      if (res.status == 404) {
+        return c_404_body;
       }
-      //throw new Error('Network response was not ok.');
+      return resBody;
     }).then((resText) => {
-      if (resText == "NULL") {
+      if (resText == c_404_body) {
         console.log("Quantum pull 404 response: " + pull_msg_id);
         span_quantum_msg_pull_status.innerHTML = "No message with ID " + pull_msg_id;
-        txt_quantum_msg_pull.innerHTML = "NULL";
+        txt_quantum_msg_pull.innerHTML = c_invalid_message;
       } else {
         console.log("Quantum pull 200 response: " + pull_msg_id);
         span_quantum_msg_pull_status.innerHTML = "Received message with ID " + pull_msg_id;
@@ -226,7 +252,7 @@ btn_action_quantum_pull.addEventListener('click', (evt:Event) => {
     }).catch((error) => {
       console.log('Failing fetch operation: ', error.message);
       span_quantum_msg_pull_status.innerHTML = "Error: " + error.message;
-      txt_quantum_msg_pull.innerHTML = "NULL";
+      txt_quantum_msg_pull.innerHTML = c_invalid_message;
     });
 });
 

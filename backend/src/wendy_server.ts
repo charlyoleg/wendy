@@ -15,6 +15,10 @@ import bodyParser from "body-parser";
 import fs from "fs";
 import https from "https";
 import path from "path";
+import crypto from "crypto";
+
+
+
 
 const ssl_options = {
     key: fs.readFileSync("./srv_wendy.key"),
@@ -38,8 +42,25 @@ wendy_server.use("/", (req, res, next) => {
 
 
 // ####################################
+// helper functions
+// ####################################
+
+async function digestMessage(message: string) {
+  //const msgUint8 = new encoding.TextEncoder().encode(message);                  // encode as (utf-8) Uint8Array
+  //const hashBuffer = await cryptosubtle.digest('SHA-256', msgUint8);            // hash the message
+  //const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
+  //const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+  const hashHex = crypto.createHash('sha256').update(message).digest('hex');
+  return hashHex;
+}
+
+
+// ####################################
 // wendy_core
 // ####################################
+
+const c_message_size_max = 10; // don't push message bigger than that
+const c_msg_id_digest_size = 5; // size of the first part of msg_id "abcde-134"
 
 let yellow_counter = 0;
 let quantum_msgs = new Map<string,string>();
@@ -120,14 +141,31 @@ wendy_server.get("/quantumcom/:msg_id", (req, res) => {
   }
 });
 
-wendy_server.post("/quantumcom/:msg_id", textParser, (req, res) => {
+wendy_server.post("/quantumcom/:msg_id", textParser, async (req, res) => {
   //const new_quantum_msg = "POST quantumcom: " + req.params.msg_id;
   const new_quantum_msg = req.body;
   console.log("POST msg ID " + req.params.msg_id);
   //console.log(new_quantum_msg)
-  let resBody = "Written";
+  let resBody = "Pushed";
+  const msg_size = new_quantum_msg.length;
+  if(msg_size > c_message_size_max){
+    const text_explanation = msg_size.toString() + " > " + c_message_size_max.toString();
+    resBody = "Refused by server: Too long : " + text_explanation;
+    console.log("Refuse message ID " + req.params.msg_id + " Too long : " + text_explanation);
+    res.status(403).end("Refused by server: Too long : " + text_explanation);
+    return;
+  }
+  const msg_digest = await digestMessage(new_quantum_msg);
+  const expected_msg_id = msg_digest.substring(0, c_msg_id_digest_size) + "-" + msg_size.toString();
+  if(expected_msg_id != req.params.msg_id){
+    const text_explanation = req.params.msg_id + " != " + expected_msg_id;
+    resBody = "Refused by server: Wrong message-ID : " + text_explanation;
+    console.log("Refuse message ID " + req.params.msg_id + " Wrong message-ID : " + text_explanation);
+    res.status(403).send("Refused by server: message-ID : " + text_explanation);
+    return;
+  }
   if(quantum_msgs.has(req.params.msg_id)){
-    resBody = "Overwritten";
+    resBody = "Over-pushed";
     console.log("key " + req.params.msg_id + " already exists and will be overwritten!")
   }
   quantum_msgs.set(req.params.msg_id, new_quantum_msg);
