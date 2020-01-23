@@ -134,7 +134,8 @@ async function digestMessage(message: string) {
 
 const c_404_body = "NULL"; // body value if request-status is 404
 const c_invalid_message = "NULL"; // to be displayed if request-status is 404
-const c_message_size_max = 20; // don't push message bigger than that
+const c_message_size_min = 2; // don't push message shorter than that
+const c_message_size_max = 20; // don't push message longer than that
 const c_msg_id_digest_size = 5; // size of the first part of msg_id "abcde-134"
 
 const input_server_url:HTMLInputElement = document.querySelector("#server_url");
@@ -160,14 +161,14 @@ btn_test_server.addEventListener('click', (evt:Event) => {
       if (res.ok) {
         return res.json(); // consuming the http body
       }
-      //throw new Error('Network response was not ok.');
     }).then((resJson) => {
       // console.log('fetch response json: ', JSON.stringify(resJson));
       // console.log('fetch response json raw: ', resJson);
       console.log(resJson.yellow_counter);
-      span_server_status.innerHTML = resJson.yellow_counter.replace(/\n/g, '<br>');
+      span_server_status.innerHTML = resJson.yellow_counter;
     }).catch(function (error) {
       console.log('Failing fetch operation: ', error.message);
+      span_server_status.innerHTML = "Error: " + error.message;
     });
 });
 
@@ -185,11 +186,11 @@ btn_action_quantum_push.addEventListener('click', async (evt:Event) => {
   const txt_to_push = txt_quantum_msg_push.value;
   const msg_size = txt_to_push.length;
   //const msg_size = txt_to_push.length + 1; // to stress-test the server checks
-  if(msg_size > c_message_size_max) {
+  if((msg_size > c_message_size_max)||(msg_size < c_message_size_min)){
     span_quantum_msg_id_push.innerHTML = "";
-    const text_explanation = msg_size.toString() + " > " + c_message_size_max.toString()
-    console.log("Warning: Message won't be pushed because too large: " + text_explanation);
-    span_quantum_push_status.innerHTML = "The message is too large to be sent: " + text_explanation;
+    const text_explanation = c_message_size_min.toString() + " < " + msg_size.toString() + " < " + c_message_size_max.toString()
+    console.log("Warning: Message won't be pushed because too short or too large: " + text_explanation);
+    span_quantum_push_status.innerHTML = "The message is too short or too large to be sent: " + text_explanation;
     return;
   }
   //const push_msg_id = "xyz-66";
@@ -253,10 +254,10 @@ btn_action_quantum_pull.addEventListener('click', (evt:Event) => {
         console.log("Quantum pull 200 response: " + pull_msg_id);
 
         const msg_size = resText.length;
-        if(msg_size > c_message_size_max) {
-          const text_explanation = msg_size.toString() + " > " + c_message_size_max.toString();
-          console.log("Warning: Message dropped because too large: " + text_explanation);
-          span_quantum_msg_pull_status.innerHTML = "Warning: Message dropped because too large: " + text_explanation;
+        if((msg_size > c_message_size_max)||(msg_size < c_message_size_min)){
+          const text_explanation = c_message_size_min.toString() + " < " + msg_size.toString() + " < " + c_message_size_max.toString();
+          console.log("Warning: Message dropped because too short or too large: " + text_explanation);
+          span_quantum_msg_pull_status.innerHTML = "Warning: Message dropped because too short or too large: " + text_explanation;
           return;
         }
         const msg_digest = await digestMessage(resText);

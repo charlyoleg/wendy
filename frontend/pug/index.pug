@@ -25,19 +25,19 @@ html(lang="en")
       h2 Wendy server (communication server)
       input#server_url(type='text', value='https://localhost:9631')
       button#action_test_server.button_enter(type='button') Test the server
-      span#server_status NUll
+      span#server_status Undefined
 
       h2 Quantum communication
       h3 Push a quantum-message
       textarea#quantum_msg_push(rows='5', cols='100', maxlength=460)
       br
       button#action_quantum_push.button_enter(type='button') Push the message
-      span#quantum_msg_id_push NUll
-      span#quantum_push_status NUll
+      span#quantum_msg_id_push Undefined
+      span#quantum_push_status Undefined
       h3 Pull a quantum-message
       input#quantum_msg_id_pull(type='text', value='abcde-10')
       button#action_quantum_pull.button_enter(type='button') Pull the message
-      span#quantum_msg_pull_status NUll
+      span#quantum_msg_pull_status Undefined
       br
       textarea#quantum_msg_pull(rows='5', cols='100', readonly=true)
 

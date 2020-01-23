@@ -59,7 +59,8 @@ async function digestMessage(message: string) {
 // wendy_core
 // ####################################
 
-const c_message_size_max = 10; // don't push message bigger than that
+const c_message_size_max = 10; // don't push message longer than that
+const c_message_size_min = 5; // don't push message shorter than that
 const c_msg_id_digest_size = 5; // size of the first part of msg_id "abcde-134"
 
 let yellow_counter = 0;
@@ -82,7 +83,7 @@ let quantum_msgs = new Map<string,string>();
 wendy_server.get("/yellow_counter", (req, res) => {
     yellow_counter += 1;
     console.log("wendy_server: yellow_counter: " + yellow_counter.toString());
-    //res.send(yellow_counter.toString());
+    //res.end(yellow_counter.toString());
     res.json({ yellow_counter : yellow_counter.toString() });
 });
 
@@ -135,7 +136,7 @@ wendy_server.get("/quantumcom/:msg_id", (req, res) => {
     quantum_msgs.delete(req.params.msg_id); // delete read message to make it quantum!
     console.log("GET message ID " + req.params.msg_id);
     //console.log(r_quantum_msg);
-    res.send(r_quantum_msg);
+    res.end(r_quantum_msg);
   }else{
     console.log("GET message ID " + req.params.msg_id + " : NULL");
     res.status(404).end();
@@ -150,10 +151,10 @@ wendy_server.post("/quantumcom/:msg_id", textParser, async (req, res) => {
   let resBody = "Pushed";
   const msg_size = new_quantum_msg.length;
   if(msg_size > c_message_size_max){
-    const text_explanation = msg_size.toString() + " > " + c_message_size_max.toString();
-    resBody = "Refused by server: Too long : " + text_explanation;
-    console.log("Refuse message ID " + req.params.msg_id + " Too long : " + text_explanation);
-    res.status(403).end("Refused by server: Too long : " + text_explanation);
+    const text_explanation = c_message_size_min.toString() + " < " +  msg_size.toString() + " < " + c_message_size_max.toString();
+    resBody = "Refused by server: Too short or too long : " + text_explanation;
+    console.log("Refuse message ID " + req.params.msg_id + " Too short or too long : " + text_explanation);
+    res.status(403).end(resBody);
     return;
   }
   const msg_digest = await digestMessage(new_quantum_msg);
@@ -162,7 +163,7 @@ wendy_server.post("/quantumcom/:msg_id", textParser, async (req, res) => {
     const text_explanation = req.params.msg_id + " != " + expected_msg_id;
     resBody = "Refused by server: Wrong message-ID : " + text_explanation;
     console.log("Refuse message ID " + req.params.msg_id + " Wrong message-ID : " + text_explanation);
-    res.status(403).send("Refused by server: message-ID : " + text_explanation);
+    res.status(403).end(resBody);
     return;
   }
   if(quantum_msgs.has(req.params.msg_id)){
@@ -170,7 +171,7 @@ wendy_server.post("/quantumcom/:msg_id", textParser, async (req, res) => {
     console.log("key " + req.params.msg_id + " already exists and will be overwritten!")
   }
   quantum_msgs.set(req.params.msg_id, new_quantum_msg);
-  res.send(resBody);
+  res.end(resBody);
 });
 
 
@@ -186,7 +187,7 @@ wendy_server.use('/', express.static(path.join(__dirname, 'public')));
 // ####################################
 
 wendy_server.use(function (req, res, next) {
-  res.status(404).send("Hey abc, Sorry can't find that!");
+  res.status(404).end("Hey abc, Sorry can't find that!");
 });
 
 
