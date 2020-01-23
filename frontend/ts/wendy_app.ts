@@ -152,7 +152,7 @@ const btn_test_server:HTMLButtonElement = document.querySelector("#action_test_s
 const span_server_status:HTMLSpanElement = document.querySelector("#server_status");
 
 btn_test_server.addEventListener('click', (evt:Event) => {
-  //const wendy_server_url = input_server_url.value
+  wendy_server_url = input_server_url.value
   console.log('Click on action_test_server with url: ' + wendy_server_url);
   //span_server_status.innerHTML = "hello";
   //span_server_status.style.background = "grey";
