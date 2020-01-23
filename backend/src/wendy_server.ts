@@ -132,6 +132,7 @@ wendy_server.get("/quantumcom/:msg_id", (req, res) => {
   if(quantum_msgs.has(req.params.msg_id)){
     //const r_quantum_msg = "GET quantumcom: " + req.params.msg_id + " : Yes";
     const r_quantum_msg = quantum_msgs.get(req.params.msg_id);
+    quantum_msgs.delete(req.params.msg_id); // delete read message to make it quantum!
     console.log("GET message ID " + req.params.msg_id);
     //console.log(r_quantum_msg);
     res.send(r_quantum_msg);

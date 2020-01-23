@@ -184,6 +184,7 @@ const span_quantum_push_status:HTMLSpanElement = document.querySelector("#quantu
 btn_action_quantum_push.addEventListener('click', async (evt:Event) => {
   const txt_to_push = txt_quantum_msg_push.value;
   const msg_size = txt_to_push.length;
+  //const msg_size = txt_to_push.length + 1; // to stress-test the server checks
   if(msg_size > c_message_size_max) {
     span_quantum_msg_id_push.innerHTML = "";
     const text_explanation = msg_size.toString() + " > " + c_message_size_max.toString()
@@ -194,6 +195,9 @@ btn_action_quantum_push.addEventListener('click', async (evt:Event) => {
   //const push_msg_id = "xyz-66";
   const push_msg_digest = await digestMessage(txt_to_push);
   const push_msg_id = push_msg_digest.substring(0, c_msg_id_digest_size) + "-" + msg_size.toString();
+  //const push_msg_id = push_msg_digest.substring(0, c_msg_id_digest_size) + "_" + msg_size.toString(); // To stress-test the server
+  //const push_msg_id = push_msg_digest.substring(0, c_msg_id_digest_size-1) + "a-" + msg_size.toString(); // To stress-test the server
+  //const push_msg_id = push_msg_digest.substring(0, c_msg_id_digest_size) + "-" + msg_size.toString() + "0"; // To stress-test the server
   console.log('Click on push-message with id: ' + push_msg_id);
   span_quantum_msg_id_push.innerHTML = push_msg_id;
   fetch(wendy_server_url + '/quantumcom/' + push_msg_id, {
@@ -203,6 +207,7 @@ btn_action_quantum_push.addEventListener('click', async (evt:Event) => {
       'Content-Type': 'text/plain'
     },
     body: txt_to_push
+    //body: txt_to_push + 'a' // To stress-test the server
     })
     .then((res) => { // http response
       //console.log("res.ok: " + res.ok);
