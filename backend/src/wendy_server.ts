@@ -150,7 +150,7 @@ wendy_server.post("/quantumcom/:msg_id", textParser, async (req, res) => {
   //console.log(new_quantum_msg)
   let resBody = "Pushed";
   const msg_size = new_quantum_msg.length;
-  if(msg_size > c_message_size_max){
+  if((msg_size > c_message_size_max)||(msg_size < c_message_size_min)){
     const text_explanation = c_message_size_min.toString() + " < " +  msg_size.toString() + " < " + c_message_size_max.toString();
     resBody = "Refused by server: Too short or too long : " + text_explanation;
     console.log("Refuse message ID " + req.params.msg_id + " Too short or too long : " + text_explanation);
