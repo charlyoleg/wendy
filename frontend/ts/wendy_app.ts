@@ -151,6 +151,16 @@ let wendy_server_url = input_server_url.value
 const btn_test_server:HTMLButtonElement = document.querySelector("#action_test_server");
 const span_server_status:HTMLSpanElement = document.querySelector("#server_status");
 
+// Update the wendy server url to the current url
+window.onload = (event: Event) => {
+  //console.log("Event: windows on load");
+  //console.log(window.location);
+  //console.log(window.location.protocol + window.location.host);
+  //console.log(window.location.origin);
+  input_server_url.value = window.location.origin;
+};
+//console.log("Event: wendy_app loading");
+
 btn_test_server.addEventListener('click', (evt:Event) => {
   wendy_server_url = input_server_url.value
   console.log('Click on action_test_server with url: ' + wendy_server_url);

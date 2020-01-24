@@ -4,23 +4,38 @@
 
 var CACHE = 'wendy-cache-and-update';
 
-self.addEventListener('install', function(evt) {
+self.addEventListener('install', (evt) => {
   console.log('INFO008: The Wendy service worker is being installed!');
   evt.waitUntil(precache().then(function () {
     return self.skipWaiting();
   }));
 });
 
-self.addEventListener('activate', function(evt) {
+self.addEventListener('activate', (evt) => {
   console.log('INFO015: The Wendy service worker is being activated!');
   evt.waitUntil(self.clients.claim());
 });
 
-self.addEventListener('fetch', function(evt) {
+let ignoreRequests = new RegExp('(' + [
+  '/quantumcom\/(.*)',
+  '/yellow_counter'].join('(\/?)|\\') + ')$');
+
+self.addEventListener('fetch', (evt) => {
   //console.log('INFO020: The Wendy service worker is serving the asset:', evt.request.url);
+  if (ignoreRequests.test(event.request.url)) {
+    console.log('ignored: ', event.request.url)
+    // request will be networked
+    fetch(request)
+    .then( (resp) => {
+      return resp;
+    }).catch( () => {
+      console.log("Error network when fetching uncachable resource ...")
+    });
+    return
+  }
   //evt.respondWith(fromCache(evt.request)
-  evt.respondWith(cacheOrNetwork(evt.request)
-  //evt.respondWith(networkOrCache(evt.request)
+  //evt.respondWith(cacheOrNetwork(evt.request)
+  evt.respondWith(networkOrCache(evt.request)
   //evt.respondWith(networkTimeoutOrCache(evt.request, 400)
   .catch(function () {
     console.log('INFO026: Fallback of fallback for: ', evt.request.url);
