@@ -16,22 +16,17 @@ self.addEventListener('activate', (evt) => {
   evt.waitUntil(self.clients.claim());
 });
 
-let ignoreRequests = new RegExp('(' + [
+// path to exclude from cache
+let specialRequests = new RegExp('(' + [
   '/quantumcom\/(.*)',
   '/yellow_counter'].join('(\/?)|\\') + ')$');
 
 self.addEventListener('fetch', (evt) => {
   //console.log('INFO020: The Wendy service worker is serving the asset:', evt.request.url);
-  if (ignoreRequests.test(event.request.url)) {
-    console.log('ignored: ', event.request.url)
-    // request will be networked
-    fetch(request)
-    .then( (resp) => {
-      return resp;
-    }).catch( () => {
-      console.log("Error network when fetching uncachable resource ...")
-    });
-    return
+  if (specialRequests.test(evt.request.url)) {
+    console.log('specialRequests for network only: ', evt.request.url)
+    evt.respondWith(fromNetworkTimeout(evt.request, 400));
+    return;
   }
   //evt.respondWith(fromCache(evt.request)
   //evt.respondWith(cacheOrNetwork(evt.request)
