@@ -13,16 +13,25 @@ html(lang="en")
     link(rel='icon', type='image/png', sizes="64x64", href='wendy_favicon_64x64.png')
     link(rel='icon', type='image/png', sizes="256x256", href='wendy_favicon_256x256.png')
   body
-    .entrance
-      h1 Welcome to Wendy's world
-      button.button_enter(type='button') Create a profile
-      button.button_enter(type='button') Load a profile
-    .entropy
+    .panel#entrance
+      .panel_title
+        img(src='wendy_1.png')
+        .panel_title_text Wendy Start Point
+      .button_holder
+        button#button_create_profile(type='button') Create a profile
+        button#button_load_profile(type='button') Load a profile
+    .panel#entropy
+      .panel_title
+        img.panel_title_img(src='wendy_2.png')
+        h1 Wendy Entropy
       button.button_restart(type='button') reStart (back to the first panel)
-      button.button_entropy(type='button') Select a file
-    .profile
+      .button_holder
+        button.button_entropy(type='button') Select a file
+    .scroll#loom
+      .panel_title
+        img.panel_title_img(src='wendy_3.png')
+        h1 Wendy Loom
       button.button_restart(type='button') reStart (back to the first panel)
-      h1 This is your profile
 
       h2 Wendy server (communication server)
       input#server_url(type='text', value='https://localhost:9631')

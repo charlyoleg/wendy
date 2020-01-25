@@ -1,8 +1,89 @@
 /* wendy_style.scss */
 // a comment not visible in the css output
 
-body h1 {
+// html {
+:root {
+  text-align: left;
+  font-size: 16px;
+  font-family: Verdana, Geneva, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: normal;
+}
+
+body {
+  background-color: #27d3ea;
+  scroll-behavior: smooth;
+}
+
+.panel {
+  min-height: 80vh;
+}
+
+.panel_title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  //align-content: center;
+  margin: 2em 0;
+}
+
+.panel_title img {
+  flex: 0 1 auto;
+  border-style: solid;
+  border-width: 1rem;
+  //border-color: #FF9900;
+  border-color: #753c92;
+  border-radius: 50%;
+  margin: 0;
+}
+
+.panel_title_text {
+  flex: 0 1 50%;
+  text-align: left;
+  font-size: 4em;
+  font-weight: 900;
+  color: #753c92;
+  margin: 0.5em;
+}
+
+.button_holder {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  //align-content: center;
+  margin: 2em 0;
+}
+
+.button_holder button {
+  flex: 1 1 auto;
+  width: 8em;
+  height: 5em;
+  margin: 1em;
+  border: 0;
+  padding: 0;
+  border-radius: 1em;
   text-align: center;
-  color: #e6e600
+  font-size: 2em;
+  font-weight: 900;
+  color: #753c92;
+  background-color: #ef6b23;
+  box-shadow: 0 0 0.5em 0 hsl(65, 100%, 86%);
+}
+
+.button_holder button:hover {
+  color: #0066cc;
+  background-color: #ccccff;
+  //border-color: #ffcc00;
+  box-shadow: 0 0 0.5em 0.2em hsl(65, 100%, 86%);
+}
+
+.button_holder button:active {
+  color: #ffffff;
+  box-shadow: 0 0 0.5em 0.5em hsl(65, 100%, 86%);
 }
 
