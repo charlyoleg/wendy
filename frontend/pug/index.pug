@@ -13,44 +13,48 @@ html(lang="en")
     link(rel='icon', type='image/png', sizes="64x64", href='wendy_favicon_64x64.png')
     link(rel='icon', type='image/png', sizes="256x256", href='wendy_favicon_256x256.png')
   body
-    .panel#entrance
-      .panel_title
+    section#entrance
+      header
         img(src='wendy_1.png')
-        .panel_title_text Wendy Start Point
+        h1 Wendy Start Point
       .button_holder
         button#button_create_profile(type='button') Create a profile
         button#button_load_profile(type='button') Load a profile
-    .panel#entropy
-      .panel_title
-        img.panel_title_img(src='wendy_2.png')
-        .panel_title_text Wendy Entropy
+    section#entropy
+      header
+        img(src='wendy_2.png')
+        h1 Wendy Entropy
       button.button_restart(type='button') reStart (back to the first panel)
       .button_holder
         button.button_entropy(type='button') Select a file
-    .scroll#loom
-      .panel_title
-        img.panel_title_img(src='wendy_3.png')
-        .panel_title_text Wendy Loom
+    section#loom
+      header
+        img(src='wendy_3.png')
+        h1 Loom
       button.button_restart(type='button') reStart (back to the first panel)
 
-      h1 Wendy server (communication server)
-      input#server_url(type='text', value='https://localhost:9631')
-      button#action_test_server.button_enter(type='button') Update and test the server
-      span#server_status Undefined
+      article
+        h2 Wendy server (communication server)
+        input#server_url(type='text', value='https://localhost:9631')
+        button#action_test_server.button_enter(type='button') Update and test the server
+        span#server_status Undefined
 
-      h1 Quantum communication
-      h2 Push a quantum-message
-      textarea#quantum_msg_push(rows='5', cols='100', maxlength=460)
-      br
-      button#action_quantum_push.button_enter(type='button') Push the message
-      span#quantum_msg_id_push Undefined
-      span#quantum_push_status Undefined
-      h2 Pull a quantum-message
-      input#quantum_msg_id_pull(type='text', value='abcde-10')
-      button#action_quantum_pull.button_enter(type='button') Pull the message
-      span#quantum_msg_pull_status Undefined
-      br
-      textarea#quantum_msg_pull(rows='5', cols='100', readonly=true)
+      article
+        h2 Quantum communication
+        article
+          h3 Push a quantum-message
+          textarea#quantum_msg_push(rows='5', cols='100', maxlength=460)
+          br
+          button#action_quantum_push.button_enter(type='button') Push the message
+          span#quantum_msg_id_push Undefined
+          span#quantum_push_status Undefined
+        article
+          h3 Pull a quantum-message
+          input#quantum_msg_id_pull(type='text', value='abcde-10')
+          button#action_quantum_pull.button_enter(type='button') Pull the message
+          span#quantum_msg_pull_status Undefined
+          br
+          textarea#quantum_msg_pull(rows='5', cols='100', readonly=true)
 
     footer#apropos
       h1 Apropos
