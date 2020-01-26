@@ -24,19 +24,29 @@ html(lang="en")
       header
         img(src='wendy_2.png')
         h1 Wendy Entropy
-      button.button_restart(type='button') reStart (back to the first panel)
+      button.button_restart(type='button') Restart<br>(back to the first panel)
       .button_holder
-        button.button_entropy(type='button') Select a file
+        button#button_entropy(type='button') Select a file
+    section#profile_loading
+      header
+        img(src='wendy_3.png')
+        h1 Wendy Profile Loading
+      button.button_restart(type='button') Restart<br>(back to the first panel)
+      p [Not yet implemented]
+      .button_holder
+        button#btn_load_profile_local_storage(type='button') Load<br>from<br>local-storage
+        button#btn_load_profile_file(type='button') Load<br>from file
+        button#btn_load_profile_server(type='button') Load<br>from server
     section#loom
       header
         img(src='wendy_3.png')
         h1 Loom
-      button.button_restart(type='button') reStart (back to the first panel)
+      button.button_restart(type='button') Restart<br>(back to the first panel)
 
       article
         h2 Wendy server (communication server)
         input#server_url(type='text', value='https://localhost:9631')
-        button#action_test_server.button_enter(type='button') Update and test the server
+        button#action_test_server(type='button') Update and test the server
         span#server_status Undefined
 
       article
@@ -45,13 +55,13 @@ html(lang="en")
           h3 Push a quantum-message
           textarea#quantum_msg_push(rows='5', cols='100', maxlength=460)
           br
-          button#action_quantum_push.button_enter(type='button') Push the message
+          button#action_quantum_push(type='button') Push the message
           span#quantum_msg_id_push Undefined
           span#quantum_push_status Undefined
         article
           h3 Pull a quantum-message
           input#quantum_msg_id_pull(type='text', value='abcde-10')
-          button#action_quantum_pull.button_enter(type='button') Pull the message
+          button#action_quantum_pull(type='button') Pull the message
           span#quantum_msg_pull_status Undefined
           br
           textarea#quantum_msg_pull(rows='5', cols='100', readonly=true)
