@@ -298,12 +298,12 @@ btn_action_quantum_pull.addEventListener('click', (evt:Event) => {
 const btn_create_profile:HTMLButtonElement = document.querySelector("#button_create_profile");
 const btn_load_profile:HTMLButtonElement = document.querySelector("#button_load_profile");
 const btn_entropy:HTMLButtonElement = document.querySelector("#button_entropy");
-const btn_restart_array:HTMLButtonElement = document.querySelectorAll(".button_restart");
+const btn_restart_array:NodeList = document.querySelectorAll(".button_restart");
 // section
-const section_entrance:HTMLSectionElement = document.querySelector("#entrance");
-const section_entropy:HTMLSectionElement = document.querySelector("#entropy");
-const section_profile_loading:HTMLSectionElement = document.querySelector("#profile_loading");
-const section_loom:HTMLSectionElement = document.querySelector("#loom");
+const section_entrance:HTMLDivElement = document.querySelector("#entrance");
+const section_entropy:HTMLDivElement = document.querySelector("#entropy");
+const section_profile_loading:HTMLDivElement = document.querySelector("#profile_loading");
+const section_loom:HTMLDivElement = document.querySelector("#loom");
 
 btn_create_profile.addEventListener('click', async (evt:Event) => {
   section_entrance.style.display = "none";
@@ -322,7 +322,8 @@ btn_entropy.addEventListener('click', async (evt:Event) => {
 
 let btn_idx:number;
 for (btn_idx = 0; btn_idx < btn_restart_array.length; btn_idx++) {
-  btn_restart_array[btn_idx].addEventListener('click', async (evt:Event) => {
+  let btn_restart_one:HTMLButtonElement = btn_restart_array.item(btn_idx) as HTMLButtonElement;
+  btn_restart_one.addEventListener('click', (evt:Event) => {
     section_entrance.style.display = "block";
     section_entropy.style.display = "none";
     section_profile_loading.style.display = "none";
