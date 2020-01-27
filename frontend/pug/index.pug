@@ -24,14 +24,16 @@ html(lang="en")
       header
         img(src='wendy_2.png')
         h1 Wendy Entropy
-      button.button_restart(type='button') Restart<br>(back to the first panel)
+      .button_restart_holder
+        button.button_restart(type='button') Restart<br>(back to the first panel)
       .button_holder
         button#button_entropy(type='button') Select a file
     section#profile_loading
       header
         img(src='wendy_3.png')
         h1 Wendy Profile Loading
-      button.button_restart(type='button') Restart<br>(back to the first panel)
+      .button_restart_holder
+        button.button_restart(type='button') Restart<br>(back to the first panel)
       p [Not yet implemented]
       .button_holder
         button#btn_load_profile_local_storage(type='button') Load<br>from<br>local-storage
@@ -41,7 +43,8 @@ html(lang="en")
       header
         img(src='wendy_3.png')
         h1 Loom
-      button.button_restart(type='button') Restart<br>(back to the first panel)
+      .button_restart_holder
+        button.button_restart(type='button') Restart<br>(back to the first panel)
 
       article
         h2 Wendy server (communication server)

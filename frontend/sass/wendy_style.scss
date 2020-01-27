@@ -50,13 +50,18 @@ body > section > header > h1 {
   margin: 0.5em;
 }
 
+.button_restart_holder {
+  //width: 100%;
+  text-align: right;
+}
+
 .button_restart {
+  //display: inline-block;
   //width: 8em;
   //height: 2em;
   padding: 1em;
   border: 0;
-  margin: 1em;
-  margin-left: 80vw;
+  margin: 2em;
   border-radius: 0.6em;
   text-align: center;
   font-size: 1em;
