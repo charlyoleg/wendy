@@ -20,7 +20,7 @@
     "dev_js": "tsc --watch --project frontend/ts",
     "build_pwa": "mkdir -p frontend/dist && cp frontend/pwa/* frontend/dist/",
     "build_favicon": "mkdir -p frontend/dist && cp frontend/favi/* frontend/dist/",
-    "build_img": "mkdir -p frontend/dist && cp -r frontend/img/* frontend/dist/",
+    "build_img": "mkdir -p frontend/dist && cp frontend/img/*.png frontend/dist/",
     "build": "run-s build_html build_css build_js build_pwa build_favicon build_img",
     "build_dev": "run-s build_html_dev build_css build_js build_pwa build_favicon build_img",
     "dev": "run-p -l dev_html dev_css dev_js build_pwa build_favicon build_img serve",
