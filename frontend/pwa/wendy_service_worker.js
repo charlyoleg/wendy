@@ -52,20 +52,18 @@ function precache() {
       '/wendy_service_worker.js',
       '/css/wendy_style.css',
       '/js/wendy_app.js',
-      '/crochet_1.png',
-      '/crochet_2.png',
-      '/wendy_1.png',
-      '/wendy_2.png',
-      '/wendy_3.png',
-      '/wendy_4.png',
-      '/wendy_5.png',
-      '/wendy_6.png',
-      '/wendy_7.png',
-      '/wendy_8.png',
-      '/wendy_9.png',
-      '/wendy_10.png',
-      '/wendy_11.png',
-      '/wendy_12.png'
+      '/devil_1.png',
+      '/devil_2.png',
+      '/monster_1.png',
+      '/monster_2.png',
+      '/monster_3.png',
+      '/monster_4.png',
+      '/monster_5.png',
+      '/monster_6.png',
+      '/monster_7.png',
+      '/monster_8.png',
+      '/monster_9.png',
+      '/monster_10.png'
     ]);
   });
 }
